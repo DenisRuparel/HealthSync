@@ -37,7 +37,7 @@ import { PatientForm } from "@/components/forms/PatientForm";
       </section>
 
       <Image
-        src="/assets/images/doctor.jpg"
+        src="/assets/images/dr01.jpg"
         height={1000}
         width={1000}
         alt="patient"
