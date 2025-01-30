@@ -27,8 +27,7 @@ export const createUser = async (user: CreateUserParams) => {
       user.name
     );
 
-    // return parseStringify(newuser);
-    console.log({ newuser })
+    return parseStringify(newuser);
   } catch (error: any) {
     // Check existing user
     if (error && error?.code === 409) {
@@ -108,7 +107,6 @@ export const getPatient = async (userId: string) => {
     );
 
     return parseStringify(patients.documents[0]);
-    // console.log(patients.documents[0])
   } catch (error) {
     console.error(
       "An error occurred while retrieving the patient details:",

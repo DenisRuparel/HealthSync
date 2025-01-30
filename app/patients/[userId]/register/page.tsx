@@ -1,17 +1,14 @@
 import Image from "next/image";
-// import { redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 
 import RegisterForm from "@/components/forms/RegisterForm";
 import { getPatient, getUser } from "@/lib/actions/patient.actions";
 
 const Register = async ({ params: { userId } }: SearchParamProps) => {
   const user = await getUser(userId);
-// const Register = async ({ params }: { params: { userId: string } }) => {
-//   const { userId } = await params;
-//   const user = await getUser(userId);
-  // const patient = await getPatient(userId);
+  const patient = await getPatient(userId);
 
-  // if (patient) redirect(`/patients/${userId}/new-appointment`);
+  if (patient) redirect(`/patients/${userId}/new-appointment`);
   const year = new Date().getFullYear();
   return (
     <div className="flex h-screen max-h-screen">
@@ -28,7 +25,7 @@ const Register = async ({ params: { userId } }: SearchParamProps) => {
           <RegisterForm user={user} />
 
           <p className="copyright py-12">
-          Copyright &copy; {year} by <span>HealthSync</span>
+            Copyright &copy; {year} by <span>HealthSync</span> | All Right Reserved
           </p>
         </div>
       </section>
