@@ -309,6 +309,10 @@ const RegisterForm = ({ user }: { user: User }) => {
         <section className="space-y-6">
           <div className="mb-9 space-y-1">
             <h2 className="sub-header">Identification and Verfication</h2>
+            <p className="text-red-700 py-0 italic">
+              Please upload the required documents. If the child does not have the necessary documents, their parents or guardians can upload them instead.
+            </p>
+
           </div>
 
           <CustomFormField
