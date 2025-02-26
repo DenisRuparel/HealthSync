@@ -1,12 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useSearchParams } from 'next/navigation';
 
 import { PatientForm } from "@/components/forms/PatientForm";
 import { PasskeyModal } from "@/components/PasskeyModal";
 
-const Home = ({ searchParams }: SearchParamProps) => { 
-  const isAdmin = searchParams?.admin === "true";
+const Home = async ({ searchParams }: SearchParamProps) => {
+  const params = await searchParams;
+  const isAdmin = params?.admin === "true";
   const year = new Date().getFullYear();
+
   return (
     <div className="flex h-screen max-h-screen">
       {isAdmin && <PasskeyModal />}

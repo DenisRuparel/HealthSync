@@ -12,14 +12,14 @@ export const convertFileToUrl = (file: File) => URL.createObjectURL(file);
 // FORMAT DATE TIME
 export const formatDateTime = (dateString: Date | string, timeZone: string = Intl.DateTimeFormat().resolvedOptions().timeZone) => {
   const dateTimeOptions: Intl.DateTimeFormatOptions = {
-    // weekday: "short", // abbreviated weekday name (e.g., 'Mon')
+    weekday: "short", // abbreviated weekday name (e.g., 'Mon')
     month: "short", // abbreviated month name (e.g., 'Oct')
     day: "numeric", // numeric day of the month (e.g., '25')
     year: "numeric", // numeric year (e.g., '2023')
-    // hour: "numeric", // numeric hour (e.g., '8')
-    // minute: "numeric", // numeric minute (e.g., '30')
-    // hour12: true, // use 12-hour clock (true) or 24-hour clock (false),
-    // timeZone: timeZone, // use the provided timezone
+    hour: "numeric", // numeric hour (e.g., '8')
+    minute: "numeric", // numeric minute (e.g., '30')
+    hour12: true, // use 12-hour clock (true) or 24-hour clock (false),
+    timeZone: timeZone, // use the provided timezone
   };
 
   const dateDayOptions: Intl.DateTimeFormatOptions = {

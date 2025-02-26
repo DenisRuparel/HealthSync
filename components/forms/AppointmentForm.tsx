@@ -37,6 +37,7 @@ export const AppointmentForm = ({
 }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const AppointmentFormValidation = getAppointmentSchema(type);
 
@@ -91,7 +92,7 @@ export const AppointmentForm = ({
           );
         }
       } else {
-        const appointmentToUpdate = {
+        const appointmentToUpdate: UpdateAppointmentParams = {
           userId,
           appointmentId: appointment?.$id!,
           appointment: {
@@ -101,14 +102,15 @@ export const AppointmentForm = ({
             cancellationReason: values.cancellationReason,
           },
           type,
+          timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         };
 
-        // const updatedAppointment = await updateAppointment(appointmentToUpdate);
+        const updatedAppointment = await updateAppointment(appointmentToUpdate);
 
-        // if (updatedAppointment) {
-        //   setOpen && setOpen(false);
-        //   form.reset();
-        // }
+        if (updatedAppointment) {
+          setOpen && setOpen(false);
+          form.reset();
+        }
       }
     } catch (error) {
       console.log(error);
@@ -125,7 +127,7 @@ export const AppointmentForm = ({
       buttonLabel = "Schedule Appointment";
       break;
     default:
-      buttonLabel = "Submit Apppointment";
+      buttonLabel = "Submit Appointment";
   }
 
   return (
@@ -170,21 +172,22 @@ export const AppointmentForm = ({
               control={form.control}
               name="schedule"
               label="Expected appointment date"
-              // showTimeSelect
-              dateFormat="dd/MM/yyyy"
+              showTimeSelect
+              dateFormat="dd/MM/yyyy h:mm aa"
             />
 
             <div
               className={`flex flex-col gap-6  ${type === "create" && "xl:flex-row"}`}
             >
-              <CustomFormField
-                fieldType={FormFieldType.TEXTAREA}
-                control={form.control}
-                name="reason"
-                label="Appointment reason"
-                placeholder="Annual montly check-up"
-                disabled={type === "schedule"}
-              />
+              {type !== "schedule" && (
+                <CustomFormField
+                  fieldType={FormFieldType.TEXTAREA}
+                  control={form.control}
+                  name="reason"
+                  label="Appointment reason"
+                  placeholder="Annual monthly check-up"
+                />
+              )}
 
               <CustomFormField
                 fieldType={FormFieldType.TEXTAREA}
@@ -192,7 +195,6 @@ export const AppointmentForm = ({
                 name="note"
                 label="Comments/notes"
                 placeholder="Prefer afternoon appointments, if possible"
-                disabled={type === "schedule"}
               />
             </div>
           </>
@@ -206,6 +208,12 @@ export const AppointmentForm = ({
             label="Reason for cancellation"
             placeholder="Urgent meeting came up"
           />
+        )}
+
+        {error && (
+          <p className="shad-error text-14-regular mt-4 flex justify-center">
+            {error}
+          </p>
         )}
 
         <SubmitButton
