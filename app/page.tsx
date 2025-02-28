@@ -1,3 +1,8 @@
+// Define the SearchParamProps type
+type SearchParamProps = {
+  searchParams: Promise<{ [key: string]: string }>;
+};
+
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from 'next/navigation';
