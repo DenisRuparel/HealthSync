@@ -3,7 +3,11 @@ import Image from "next/image";
 import { AppointmentForm } from "@/components/forms/AppointmentForm";
 import { getPatient } from "@/lib/actions/patient.actions";
 
-// @ts-ignore
+// Define the SearchParamProps type
+type SearchParamProps = {
+  params: { [key: string]: string };
+};
+
 const Appointment = async ({ params: { userId } }: SearchParamProps) => {
   const patient = await getPatient(userId);
   const year = new Date().getFullYear();
@@ -25,7 +29,9 @@ const Appointment = async ({ params: { userId } }: SearchParamProps) => {
             type="create"
           />
 
-          <p className="copyright mt-10 py-12">Copyright &copy; {year} by <span>HealthSync</span> | All Right Reserved</p>
+          <p className="copyright mt-10 py-12">
+            Copyright &copy; {year} by <span>HealthSync</span> | All Right Reserved
+          </p>
         </div>
       </section>
 
