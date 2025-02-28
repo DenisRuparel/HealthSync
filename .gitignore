@@ -39,3 +39,24 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Terraform state files
+*.tfstate
+*.tfstate.backup
+*.tfvars.json
+
+# Crash logs
+crash.log
+crash.*.log
+
+# Terraform plan files
+*.tfplan
+
+# Terraform module and provider cache
+.terraform/
+.terraform.lock.hcl
+
+# Personal override files (if used)
+terraform.tfvars
+override.tf
+override.tf.json
