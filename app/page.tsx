@@ -11,7 +11,6 @@ import { PatientForm } from "@/components/forms/PatientForm";
 import { PasskeyModal } from "@/components/PasskeyModal";
 
 // @ts-ignore
-checkFields<Diff<PageProps, FirstArg<TEntry['default']>, 'default'>>();
 const Home = async ({ searchParams }: SearchParamProps) => {
   const params = await searchParams;
   const isAdmin = params?.admin === "true";

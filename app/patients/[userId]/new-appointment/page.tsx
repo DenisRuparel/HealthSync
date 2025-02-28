@@ -9,7 +9,6 @@ type SearchParamProps = {
 };
 
 // @ts-ignore
-checkFields<Diff<PageProps, FirstArg<TEntry['default']>, 'default'>>();
 const Appointment = async ({ params: { userId } }: SearchParamProps) => {
   const patient = await getPatient(userId);
   const year = new Date().getFullYear();
