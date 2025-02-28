@@ -5,6 +5,7 @@ import RegisterForm from "@/components/forms/RegisterForm";
 import { getPatient, getUser } from "@/lib/actions/patient.actions";
 
 // @ts-ignore
+checkFields<Diff<PageProps, FirstArg<TEntry['default']>, 'default'>>();
 const Register = async ({ params: { userId } }: SearchParamProps) => {
   const user = await getUser(userId);
   const patient = await getPatient(userId);
