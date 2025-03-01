@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true, // Ignores ESLint errors during the build
   },
   env: {
-    DATABASE_ID: process.env.DATABASE_ID,
+    DATABASE_ID: process.env.NEXT_PUBLIC_DATABASE_ID,
     APPWRITE_PROJECT_ID: process.env.PROJECT_ID,
     APPWRITE_API_KEY: process.env.API_KEY,
   },
