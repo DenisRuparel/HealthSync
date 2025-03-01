@@ -4,15 +4,12 @@ WORKDIR /app
 
 COPY package.json package-lock.json ./
 
-RUN npm install --only=production  # Install only production dependencies
+RUN npm install
 
-COPY . .  
+COPY . .
 
-ARG NODE_ENV=production
-ENV NODE_ENV=$NODE_ENV
-
-RUN npm run build  # Uses the correct env variables
+RUN npm run build
 
 EXPOSE 3000
 
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "dev"]
