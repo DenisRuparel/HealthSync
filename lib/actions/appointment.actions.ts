@@ -6,8 +6,8 @@ import { ID, Query } from "node-appwrite";
 import { Appointment } from "@/types/appwrite.types";
 
 import {
-  NEXT_PUBLIC_APPOINTMENT_COLLECTION_ID,
-  NEXT_PUBLIC_DATABASE_ID,
+  APPWRITE_APPOINTMENT_COLLECTION_ID,
+  APPWRITE_DATABASE_ID,
   databases,
   messaging,
 } from "../appwrite.config";
@@ -19,8 +19,8 @@ export const createAppointment = async (
 ) => {
   try {
     const newAppointment = await databases.createDocument(
-      NEXT_PUBLIC_DATABASE_ID!,
-      NEXT_PUBLIC_APPOINTMENT_COLLECTION_ID!,
+      APPWRITE_DATABASE_ID!,
+      APPWRITE_APPOINTMENT_COLLECTION_ID!,
       ID.unique(),
       appointment
     );
@@ -36,8 +36,8 @@ export const createAppointment = async (
 export const getRecentAppointmentList = async () => {
   try {
     const appointments = await databases.listDocuments(
-      NEXT_PUBLIC_DATABASE_ID!,
-      NEXT_PUBLIC_APPOINTMENT_COLLECTION_ID!,
+      APPWRITE_DATABASE_ID!,
+      APPWRITE_APPOINTMENT_COLLECTION_ID!,
       [Query.orderDesc("$createdAt")]
     );
 
@@ -127,8 +127,8 @@ export const updateAppointment = async ({
   try {
     // Update appointment to scheduled -> https://appwrite.io/docs/references/cloud/server-nodejs/databases#updateDocument
     const updatedAppointment = await databases.updateDocument(
-      NEXT_PUBLIC_DATABASE_ID!,
-      NEXT_PUBLIC_APPOINTMENT_COLLECTION_ID!,
+      APPWRITE_DATABASE_ID!,
+      APPWRITE_APPOINTMENT_COLLECTION_ID!,
       appointmentId,
       appointment
     );
@@ -149,8 +149,8 @@ export const updateAppointment = async ({
 export const getAppointment = async (appointmentId: string) => {
   try {
     const appointment = await databases.getDocument(
-      NEXT_PUBLIC_DATABASE_ID!,
-      NEXT_PUBLIC_APPOINTMENT_COLLECTION_ID!,
+      APPWRITE_DATABASE_ID!,
+      APPWRITE_APPOINTMENT_COLLECTION_ID!,
       appointmentId
     );
 
