@@ -60,3 +60,6 @@ crash.*.log
 terraform.tfvars
 override.tf
 override.tf.json
+
+# SSH Keys
+terraform/healthsync_key*
