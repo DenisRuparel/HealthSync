@@ -22,7 +22,11 @@ export const columns: ColumnDef<Appointment>[] = [
     header: "Patient",
     cell: ({ row }) => {
       const appointment = row.original;
-      return <p className="text-14-medium ">{appointment.patient.name}</p>;
+      return (
+        <p className="text-14-medium ">
+          {appointment.patient?.name || "N/A"}
+        </p>
+      );
     },
   },
   {
@@ -61,14 +65,20 @@ export const columns: ColumnDef<Appointment>[] = [
 
       return (
         <div className="flex items-center gap-3">
-          <Image
-            src={doctor?.image!}
-            alt="doctor"
-            width={100}
-            height={100}
-            className="size-8"
-          />
-          <p className="whitespace-nowrap">Dr. {doctor?.name}</p>
+          {doctor ? (
+            <>
+              <Image
+                src={doctor.image}
+                alt="doctor"
+                width={100}
+                height={100}
+                className="size-8"
+              />
+              <p className="whitespace-nowrap">Dr. {doctor.name}</p>
+            </>
+          ) : (
+            <p className="whitespace-nowrap">Dr. {appointment.primaryPhysician || "Unknown"}</p>
+          )}
         </div>
       );
     },
@@ -78,6 +88,11 @@ export const columns: ColumnDef<Appointment>[] = [
     header: () => <div className="pl-4">Actions</div>,
     cell: ({ row }) => {
       const appointment = row.original;
+
+      // Don't render actions if patient data is missing
+      if (!appointment.patient?.$id) {
+        return <div className="flex gap-1">N/A</div>;
+      }
 
       return (
         <div className="flex gap-1">

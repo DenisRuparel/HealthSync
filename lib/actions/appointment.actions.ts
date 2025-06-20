@@ -8,6 +8,7 @@ import { Appointment } from "@/types/appwrite.types";
 import {
   NEXT_PUBLIC_APPOINTMENT_COLLECTION_ID,
   NEXT_PUBLIC_DATABASE_ID,
+  NEXT_PUBLIC_PATIENTS_COLLECTION_ID,
   databases,
   messaging,
 } from "../appwrite.config";
@@ -41,25 +42,33 @@ export const getRecentAppointmentList = async () => {
       [Query.orderDesc("$createdAt")]
     );
 
-    // const scheduledAppointments = (
-    //   appointments.documents as Appointment[]
-    // ).filter((appointment) => appointment.status === "scheduled");
-
-    // const pendingAppointments = (
-    //   appointments.documents as Appointment[]
-    // ).filter((appointment) => appointment.status === "pending");
-
-    // const cancelledAppointments = (
-    //   appointments.documents as Appointment[]
-    // ).filter((appointment) => appointment.status === "cancelled");
-
-    // const data = {
-    //   totalCount: appointments.total,
-    //   scheduledCount: scheduledAppointments.length,
-    //   pendingCount: pendingAppointments.length,
-    //   cancelledCount: cancelledAppointments.length,
-    //   documents: appointments.documents,
-    // };
+    // Populate patient data for each appointment
+    const appointmentsWithPatients = await Promise.all(
+      appointments.documents.map(async (appointment: any) => {
+        try {
+          // Get patient data if patient field exists and is a string (patient ID)
+          if (appointment.patient && typeof appointment.patient === 'string') {
+            const patient = await databases.getDocument(
+              NEXT_PUBLIC_DATABASE_ID!,
+              NEXT_PUBLIC_PATIENTS_COLLECTION_ID!,
+              appointment.patient
+            );
+            return {
+              ...appointment,
+              patient: patient
+            };
+          }
+          return appointment;
+        } catch (error) {
+          console.error(`Error fetching patient for appointment ${appointment.$id}:`, error);
+          // Return appointment with null patient if patient fetch fails
+          return {
+            ...appointment,
+            patient: null
+          };
+        }
+      })
+    );
 
     const initialCounts = {
       scheduledCount: 0,
@@ -67,7 +76,7 @@ export const getRecentAppointmentList = async () => {
       cancelledCount: 0,
     };
 
-    const counts = (appointments.documents as Appointment[]).reduce(
+    const counts = (appointmentsWithPatients as Appointment[]).reduce(
       (acc, appointment) => {
         switch (appointment.status) {
           case "scheduled":
@@ -88,7 +97,7 @@ export const getRecentAppointmentList = async () => {
     const data = {
       totalCount: appointments.total,
       ...counts,
-      documents: appointments.documents,
+      documents: appointmentsWithPatients,
     };
 
     return parseStringify(data);
@@ -154,10 +163,25 @@ export const getAppointment = async (appointmentId: string) => {
       appointmentId
     );
 
+    // Populate patient data if patient field is a string (patient ID)
+    if (appointment.patient && typeof appointment.patient === 'string') {
+      try {
+        const patient = await databases.getDocument(
+          NEXT_PUBLIC_DATABASE_ID!,
+          NEXT_PUBLIC_PATIENTS_COLLECTION_ID!,
+          appointment.patient
+        );
+        appointment.patient = patient;
+      } catch (error) {
+        console.error(`Error fetching patient for appointment ${appointmentId}:`, error);
+        appointment.patient = null;
+      }
+    }
+
     return parseStringify(appointment);
   } catch (error) {
     console.error(
-      "An error occurred while retrieving the existing patient:",
+      "An error occurred while retrieving the existing appointment:",
       error
     );
   }
